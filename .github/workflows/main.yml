@@ -1,0 +1,29 @@
+name: Daily Auto Commit (C++ Simple Version)
+
+on:
+  schedule:
+    #(UTC 15:00)
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile the C++ code
+        run: g++ autocommit.cpp -o autocommit_executable
+
+      - name: Run the executable
+        run: ./autocommit_executable
+
+      - name: Commit and push if it changed
+        run: |
+          git config --global user.name 'moruraQ'
+          git config --global user.email '942park@gmail.com'
+          git add .
+          git diff --staged --quiet || git commit -m "🤖 Chore: Update auto-commit log"
+          git push
