@@ -1,6 +1,7 @@
 /*
 * Github Auto Commit System
-* 2025-10-04
+* 2025-10-09
+*Change commit log -> write commit log
 */
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
@@ -64,3 +65,4 @@ int main() {
 
     return 0;
 }
+
