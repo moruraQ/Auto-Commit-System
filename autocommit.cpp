@@ -55,7 +55,7 @@ int main() {
 
     // add log
     string timestamp = get_current_timestamp_kst();
-    string new_log_entry = "- Automated commit successful. Timestamp: " + timestamp + " KST\n";
+    string new_log_entry = "- It is automated commit. Not changed. Timestamp: " + timestamp + " KST\n";
     outfile << new_log_entry;
 
     // close file
@@ -65,4 +65,5 @@ int main() {
 
     return 0;
 }
+
 
