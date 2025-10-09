@@ -12,13 +12,13 @@
 
 using namespace std;
 
-// return time
+// return KST time
 string get_current_timestamp_kst() {
-    // time
+    // system time
     auto now = chrono::system_clock::now();
-    // UTC -> KST
+    // change UTC -> KST
     auto kst_time = now + chrono::hours(9);
-    //type transform
+    // type transform
     auto in_time_t = chrono::system_clock::to_time_t(kst_time);
 
     stringstream ss;
@@ -29,25 +29,38 @@ string get_current_timestamp_kst() {
 int main() {
     const string target_file = "AUTO_COMMIT_LOG.md";
 
-    string timestamp = get_current_timestamp_kst();
-
-    // content
-    string content = "it is auto commit system. not changed\n";
-    content += "Timestamp: " + timestamp + " KST\n";
-
-    // open file and write content
-    try {
-        ofstream outfile(target_file);
-        outfile << "# Auto Commit Log\n\n";
-        outfile << content;
-        outfile.close();
-
-        cout << "Successfully wrote log to " << target_file << endl;
+    // file check
+    bool file_exists = false;
+    {
+        ifstream infile(target_file);
+        if (infile.good()) {
+            file_exists = true;
+        }
     }
-    catch (const exception& e) {
-        cerr << "Error writing to file: " << e.what() << endl;
+
+    // open file
+    ofstream outfile(target_file, ios::app);
+
+    // file open fails
+    if (!outfile.is_open()) {
+        cerr << "Error: Could not open file for writing." << endl;
         return 1; // error
     }
+
+    // new file
+    if (!file_exists) {
+        outfile << "# Auto Commit Log\n\n";
+    }
+
+    // add log
+    string timestamp = get_current_timestamp_kst();
+    string new_log_entry = "- Automated commit successful. Timestamp: " + timestamp + " KST\n";
+    outfile << new_log_entry;
+
+    // close file
+    outfile.close();
+
+    cout << "Successfully appended log to " << target_file << endl;
 
     return 0;
 }
